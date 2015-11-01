@@ -26,7 +26,7 @@ salt <windows-minion> win_ossec.get_agent_id
 The example state below ensures ossec is installed, registered with the server, and running.
 
 ```
-'OSSEC HIDS 2.8':
+ossec-agent:
   pkg.installed:
     - version: '2.8'
 
@@ -34,11 +34,11 @@ The example state below ensures ossec is installed, registered with the server, 
   win_ossec.autoenrolled:
     - name: '{{ salt['pillar.get']("ossec_server_ip") }}'
   require:
-    - pkg: 'OSSEC HIDS 2.8'
+    - pkg: ossec-agent
 
 'C:\\Program Files (x86)\\ossec-agent\ossec.conf':
   require:
-    - pkg: 'OSSEC HIDS 2.8'
+    - pkg: ossec-agent
   file.managed:
     - source: salt://path-to-your-template-config/ossec.conf
     - template: jinja
@@ -47,7 +47,7 @@ The example state below ensures ossec is installed, registered with the server, 
 
 OssecSvc:
   require:
-    - pkg: 'OSSEC HIDS 2.8'
+    - pkg: ossec-agent
     - win_ossec: '{{ salt['pillar.get']("ossec_server_ip") }}'
     - file: 'C:\\Program Files (x86)\\ossec-agent\ossec.conf'
   service.running:
