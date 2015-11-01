@@ -69,13 +69,8 @@ def get_agent_id(
   '''
 
   if not os.path.exists(keyFilePath):
-    return {
-      "result": False
-    }
+    return None
 
   keyFile = open(keyFilePath, 'r')
   keyParts = _parsekeyLine(keyFile.read())
-  return {
-    "result": True,
-    "id": keyParts["id"]
-  }
+  return keyParts["id"]
