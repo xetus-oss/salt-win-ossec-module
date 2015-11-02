@@ -4,7 +4,7 @@ _A module to make managing OSSEC on windows minions less painful._
 
 The main feature of this module is support for `ossec-authd` automatic enrollment for windows clients, something that is [not currently supported](https://github.com/ossec/ossec-hids/pull/181) by the standard OSSEC distribution. By the looks of it, this won't be supported in 2.9 either.
 
-Using this module, combined with the ossec package installer in the [win_repo](), completely salt-managed installation and enrollment is possible. Whether you are automatically provisioning 10 or 1000 systems, this is a huge win.
+Using this module, combined with the [ossec-agent package in the win_repo](https://github.com/saltstack/salt-winrepo/blob/master/ossec-agent.sls),a completely salt-managed installation and enrollment is possible. Whether you are automatically provisioning 10 or 1000 systems, this is a huge win.
 
 # Usage Examples
 
@@ -23,7 +23,7 @@ salt <windows-minion> win_ossec.get_agent_id
 
 ## Example sls
 
-The example state below ensures ossec is installed, registered with the server, and running.
+The example state below ensures the ossec-agent is installed, registered with the server, and running.
 
 ```
 ossec-agent:
@@ -36,7 +36,7 @@ ossec-agent:
   require:
     - pkg: ossec-agent
 
-'C:\\Program Files (x86)\\ossec-agent\ossec.conf':
+'C:\Program Files (x86)\ossec-agent\ossec.conf':
   require:
     - pkg: ossec-agent
   file.managed:
@@ -49,11 +49,11 @@ OssecSvc:
   require:
     - pkg: ossec-agent
     - win_ossec: '{{ salt['pillar.get']("ossec_server_ip") }}'
-    - file: 'C:\\Program Files (x86)\\ossec-agent\ossec.conf'
+    - file: 'C:\Program Files (x86)\ossec-agent\ossec.conf'
   service.running:
     - enable: True
     - watch:
-      - file: 'C:\\Program Files (x86)\\ossec-agent\ossec.conf'
+      - file: 'C:\Program Files (x86)\ossec-agent\ossec.conf'
       - win_ossec: '{{ salt['pillar.get']("ossec_server_ip") }}'
 ```
 
